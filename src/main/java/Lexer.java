@@ -81,7 +81,7 @@ public class Lexer {
     queue.add(lineNo, Token.EOF);
   }
 
-  
+
   protected void addToken(int lineNo, Matcher matcher) {
     String m = matcher.group(1);
     if (m != null) {
