@@ -1,12 +1,12 @@
-/*
+package lexer;/*
  * Copyright (c) 2017, CipherGateway and/or its affiliates. All rights  reserved.
  *
  */
 
 
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.io.LineNumberReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,29 +20,30 @@ public class Lexer {
   ;
   private Pattern pattern = Pattern.compile(regexPat);
 
-  public Lexer(LineNumberReader reader, boolean hasMore) {
-    this.reader = reader;
-    this.hasMore = hasMore;
+  public Lexer(Reader reader) {
+    this.reader = new LineNumberReader(reader);
+    this.hasMore = true;
   }
 
 
- public Token read() throws  ParseException{
-    if(fillQueue(0)){
-      return  queue.remove(0);
-    }else {
+  public Token read() throws ParseException {
+    if (fillQueue(0)) {
+      return queue.remove(0);
+    } else {
       return Token.EOF;
     }
- }
+  }
 
- public Token peek(int i ) throws  ParseException{
-    if(fillQueue(i)){
+  public Token peek(int i) throws ParseException {
+    if (fillQueue(i)) {
       return queue.get(i);
-    }else {
+    } else {
       return Token.EOF;
     }
- }
+  }
+
   private boolean fillQueue(int i) throws ParseException {
-    while (i > queue.size()) {
+    while (i >= queue.size()) {
       if (hasMore) {
         readLine();
       } else {
@@ -78,14 +79,14 @@ public class Lexer {
         throw new ParseException("bad token at line " + lineNo);
       }
     }
-    queue.add(lineNo, Token.EOF);
+    queue.add(new IdToken(lineNo, Token.EOL));
   }
 
 
   protected void addToken(int lineNo, Matcher matcher) {
     String m = matcher.group(1);
     if (m != null) {
-      if (matcher.group(2) != null) {
+      if (matcher.group(2) == null) {
         Token token;
         if (matcher.group(3) != null) {
           token = new NumToken(lineNo, Integer.parseInt(m));
@@ -97,6 +98,25 @@ public class Lexer {
         queue.add(token);
       }
     }
+  }
+
+  protected String toStringLiteral(String s) {
+    StringBuilder sb = new StringBuilder();
+    int len = s.length() - 1;
+    for (int i = 1; i < len; i++) {
+      char c = s.charAt(i);
+      if (c == '\\' && i + 1 < len) {
+        int c2 = s.charAt(i + 1);
+        if (c2 == '"' || c2 == '\\')
+          c = s.charAt(++i);
+        else if (c2 == 'n') {
+          ++i;
+          c = '\n';
+        }
+      }
+      sb.append(c);
+    }
+    return sb.toString();
   }
 
   protected static class IdToken extends Token {
