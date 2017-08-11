@@ -7,6 +7,7 @@ package parser;
 import ast.ASTLeaf;
 import ast.ASTList;
 import ast.ASTree;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import lexer.Lexer;
 import lexer.ParseException;
 import lexer.Token;
@@ -42,6 +43,10 @@ public class Parser {
 
   public static class OrTree extends Element {
     protected Parser[] parsers;
+
+    public OrTree(Parser[] parsers) {
+      this.parsers = parsers;
+    }
 
     @Override
     protected void parse(Lexer lexer, List<ASTree> res) throws ParseException {
@@ -250,8 +255,8 @@ public class Parser {
     protected Operators operators;
     protected Parser factor;
 
-    public Expr(Factory factory, Operators operators, Parser parser) {
-      this.factory = factory;
+    public Expr(Class<? extends ASTree> clazz, Parser parser, Operators operators) {
+      this.factory = Factory.getForASTList(clazz);
       this.operators = operators;
       this.factor = parser;
     }
@@ -415,5 +420,92 @@ public class Parser {
     return this;
   }
 
+  public Parser number() {
+    return number(null);
+  }
 
+  public Parser number(Class<? extends ASTLeaf> clazz) {
+    elements.add(new NumToken(clazz));
+    return this;
+  }
+
+  public Parser identifier(HashSet<String> revserved) {
+    return identifier(null, revserved);
+  }
+
+  public Parser identifier(Class<? extends ASTLeaf> clazz, HashSet<String> reserved) {
+    elements.add(new IdToken(clazz, reserved));
+    return this;
+  }
+
+  public Parser string() {
+    return string(null);
+  }
+
+  public Parser string(Class<? extends ASTLeaf> clazz) {
+    elements.add(new StrToken(clazz));
+    return this;
+  }
+
+  public Parser token(String... pat) {
+    elements.add(new Leaf(pat));
+    return this;
+  }
+
+  public Parser sep(String... pat) {
+    elements.add(new Skip(pat));
+    return this;
+  }
+
+  public Parser ast(Parser p) {
+    elements.add(new Tree(p));
+    return this;
+  }
+
+  public Parser or(Parser... p) {
+    elements.add(new OrTree(p));
+    return this;
+  }
+
+  public Parser maybe(Parser p) {
+    Parser p2 = new Parser(p);
+    p2.reset();
+    elements.add(new OrTree(new Parser[]{p, p2}));
+    return this;
+  }
+
+
+  public Parser option(Parser p) {
+    elements.add(new Repeat(p, true));
+    return this;
+  }
+
+
+  public Parser repeat(Parser p) {
+    elements.add(new Repeat(p, false));
+    return this;
+  }
+
+  public Parser expression(Parser subexp, Operators operators) {
+    elements.add(new Expr(null, subexp, operators));
+    return this;
+  }
+
+  public Parser expression(Class<? extends ASTree> clazz, Parser subexp,
+                           Operators operators) {
+    elements.add(new Expr(clazz, subexp, operators));
+    return this;
+  }
+
+  public Parser insertChoice(Parser p) {
+    Element e = elements.get(0);
+    if (e instanceof OrTree) {
+      ((OrTree) e).insert(p);
+    } else {
+      Parser otherwise = new Parser(this);
+      reset(null);
+      or(p, otherwise);
+    }
+    return this;
+  }
 }
