@@ -7,6 +7,7 @@ package parser;
 import ast.ASTLeaf;
 import ast.ASTList;
 import ast.ASTree;
+import ast.BinaryExpr;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import lexer.Lexer;
 import lexer.ParseException;
@@ -256,9 +257,15 @@ public class Parser {
     protected Parser factor;
 
     public Expr(Class<? extends ASTree> clazz, Parser parser, Operators operators) {
+      if(clazz.equals(BinaryExpr.class)){
+        System.out.println("pause");
+      }
       this.factory = Factory.getForASTList(clazz);
       this.operators = operators;
       this.factor = parser;
+      if(factory ==null){
+        System.out.println("factory is null");
+      }
     }
 
     private ASTree doShift(Lexer lexer, ASTree left, int prec) throws ParseException {
@@ -338,9 +345,8 @@ public class Parser {
             }
           }
         };
-        return f;
       }
-      return null;
+      return f;
     }
 
     protected static Factory get(Class<? extends ASTree> clazz, Class<?> argType) {
@@ -389,7 +395,7 @@ public class Parser {
       e.parse(lexer, result);
 
     }
-    return null;
+    return factory.make(result);
   }
 
   protected boolean match(Lexer lexer) throws ParseException {

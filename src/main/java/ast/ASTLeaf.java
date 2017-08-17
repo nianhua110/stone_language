@@ -36,4 +36,9 @@ public class ASTLeaf extends ASTree {
   public Token token() {
     return token;
   }
+
+  @Override
+  public String toString() {
+    return token.getText();
+  }
 }
