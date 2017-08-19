@@ -2,12 +2,15 @@
  * Copyright (c) 2017, CipherGateway and/or its affiliates. All rights  reserved.
  *
  */
-package lexer;
+package chap16;
 
 import ast.ASTLeaf;
 import ast.ASTree;
 import ast.BinaryExpr;
 import ast.NumberLiteral;
+import lexer.Lexer;
+import lexer.ParseException;
+import lexer.Token;
 import runner.CodeDialog;
 
 import java.util.Arrays;
