@@ -8,9 +8,8 @@ import ast.ASTLeaf;
 import ast.ASTList;
 import ast.ASTree;
 import ast.BinaryExpr;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import lexer.Lexer;
-import lexer.ParseException;
+import ex.ParseException;
 import lexer.Token;
 
 import java.lang.reflect.Constructor;

@@ -9,7 +9,7 @@ import ast.ASTree;
 import ast.BinaryExpr;
 import ast.NumberLiteral;
 import lexer.Lexer;
-import lexer.ParseException;
+import ex.ParseException;
 import lexer.Token;
 import runner.CodeDialog;
 

@@ -1,7 +1,9 @@
-package lexer;/*
+package ex;/*
  * Copyright (c) 2017, CipherGateway and/or its affiliates. All rights  reserved.
  *
  */
+
+import lexer.Token;
 
 import java.io.IOException;
 

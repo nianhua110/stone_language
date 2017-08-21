@@ -6,9 +6,8 @@ package parser;
 
 
 import ast.*;
-import com.sun.corba.se.impl.oa.toa.TOA;
 import lexer.Lexer;
-import lexer.ParseException;
+import ex.ParseException;
 import lexer.Token;
 
 import java.util.HashSet;

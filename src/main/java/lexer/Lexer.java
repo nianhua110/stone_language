@@ -5,6 +5,8 @@ package lexer;/*
 
 
 
+import ex.ParseException;
+
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.util.ArrayList;
