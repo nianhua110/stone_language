@@ -28,18 +28,23 @@ public class ASTList extends ASTree {
 
   @Override
   public String toString() {
-    String str = children.stream()
-        .map(in -> in.toString())
-        .reduce((a, b) -> a + " " + b)
-        .orElse("");
-    return "( " + str + " )";
+    StringBuilder builder = new StringBuilder();
+    builder.append('(');
+    String sep = "";
+    for (ASTree t : children) {
+      builder.append(sep);
+      sep = " ";
+      builder.append(t.toString());
+    }
+    return builder.append(')').toString();
   }
 
   public String location() {
-    return children.stream()
-        .map(in -> in.location())
-        .filter(in -> in != null)
-        .findFirst()
-        .orElse(null);
+    for (ASTree t : children) {
+      String s = t.location();
+      if (s != null)
+        return s;
+    }
+    return null;
   }
 }

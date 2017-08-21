@@ -14,7 +14,7 @@ import sun.plugin.navig.motif.OJIPlugin;
 
 import java.util.List;
 
-public class BasicEvaluator {
+@Reviser  public class BasicEvaluator {
 
   public static final int TRUE = 1;
   public static final int FALSE = 0;

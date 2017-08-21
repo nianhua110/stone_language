@@ -4,7 +4,6 @@ package lexer;/*
  */
 
 
-
 import ex.ParseException;
 
 import java.io.LineNumberReader;
@@ -176,6 +175,11 @@ public class Lexer {
     @Override
     public String getText() {
       return String.valueOf(v);
+    }
+
+    @Override
+    public int getNumber() {
+      return v;
     }
   }
 }

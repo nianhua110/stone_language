@@ -3,6 +3,8 @@ package lexer;/*
  *
  */
 
+import ex.StoneException;
+
 public class Token {
   public static final Token EOF = new Token(-1) {
   };
@@ -38,4 +40,9 @@ public class Token {
   public String getText() {
     return "";
   }
+
+  public int getNumber() {
+    throw new StoneException(" not number token");
+  }
+
 }

@@ -12,6 +12,6 @@ public class NumberLiteral extends ASTLeaf {
   }
 
   public int val(){
-    return token().getLineNumber();
+    return token().getNumber();
   }
 }

@@ -144,7 +144,7 @@ public class Parser {
 
     public IdToken(Class<? extends ASTLeaf> type, HashSet<String> r) {
       super(type);
-      reserved = r != null ? r : new HashSet<>();
+      reserved = r != null ? r : new HashSet<String>();
     }
 
     @Override
@@ -256,13 +256,13 @@ public class Parser {
     protected Parser factor;
 
     public Expr(Class<? extends ASTree> clazz, Parser parser, Operators operators) {
-      if(clazz.equals(BinaryExpr.class)){
+      if (clazz.equals(BinaryExpr.class)) {
         System.out.println("pause");
       }
       this.factory = Factory.getForASTList(clazz);
       this.operators = operators;
       this.factor = parser;
-      if(factory ==null){
+      if (factory == null) {
         System.out.println("factory is null");
       }
     }
