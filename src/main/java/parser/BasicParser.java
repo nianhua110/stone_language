@@ -29,7 +29,8 @@ public class BasicParser {
   Parser block = Parser.rule(BlockStmnt.class)
       .sep("{").option(statement0)
       .repeat(Parser.rule().sep(";", Token.EOL).option(statement0)
-          .sep("}"));
+          .repeat(Parser.rule().sep(";", Token.EOL).option(statement0))
+          .sep("}")).option(Parser.rule().sep(Token.EOL));
   Parser simple = Parser.rule(PrimaryExpr.class).ast(expr);
   Parser statment = statement0.or(Parser.rule(IfStmnt.class).sep("if")
           .ast(expr).ast(block).option(Parser.rule().sep("else").ast(block)),

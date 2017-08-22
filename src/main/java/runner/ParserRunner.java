@@ -15,8 +15,9 @@ import java.io.StringReader;
 
 public class ParserRunner {
   public static void main(String[] args) throws ParseException {
-    Reader reader = new StringReader(" a = 3");
+    Reader reader = new StringReader(" if a>3 { \\n b=3 \\n }");
     Lexer l = new Lexer(new CodeDialog());
+    //Lexer l = new Lexer(reader);
     BasicParser bp = new BasicParser();
     while (l.peek(0) != Token.EOF) {
       ASTree ast = bp.parser(l);
