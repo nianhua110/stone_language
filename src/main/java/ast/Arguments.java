@@ -11,7 +11,7 @@ public class Arguments extends Postifix {
     super(list);
   }
 
-  int size() {
+  protected int size() {
     return numChildren();
   }
 }
