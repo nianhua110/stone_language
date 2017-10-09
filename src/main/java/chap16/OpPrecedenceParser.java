@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, CipherGateway and/or its affiliates. All rights  reserved.
+ * kyle
  *
  */
 package chap16;
